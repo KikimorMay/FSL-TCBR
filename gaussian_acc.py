@@ -17,7 +17,7 @@ def gen_clusters(a, sample_num):
     return np.round(data1, 4), np.round(data2, 4)
 
 
-def draw_gaussian_acc(acc_dict, dis_dict, acc_all_mean, a, shot):
+def draw_gaussian_acc(acc_dict, dis_dict, acc_all_mean):
     info = acc_dict
     key_sort = sorted(info.keys())
     dis_list = []
@@ -98,6 +98,7 @@ def get_acc(a, n_shot, n_query=200):
         dis = dis.cpu().numpy()
         dis = dis.mean()
         dis = np.around(dis, 1)
+
         if dis in dis_dict:
             dis_dict[dis] = dis_dict[dis] + 1
         else:
@@ -109,9 +110,19 @@ def get_acc(a, n_shot, n_query=200):
             acc_dict[dis] = [acc]
 
     acc_np = np.array(acc_list)
-    draw_gaussian_acc(acc_dict, dis_dict, acc_np.mean(), a, n_shot)
+
+    draw_gaussian_acc(acc_dict, dis_dict, acc_np.mean())
 
 
-get_acc(a=1.5, n_shot=1)
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--a', type=float, default='1',
+                    help='0.5/1/2/3')
+parser.add_argument('--n_shot', type=int, default='1',
+                    help='1/3/5/10')
+args = parser.parse_args()
+
+get_acc(a=args.a, n_shot=args.n_shot)
 
 

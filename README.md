@@ -11,20 +11,11 @@ We use the same backbone network and training strategies as 'S2M2_R'. Please ref
 
 
 #### Step1.
-The reviewers can find the extracted feature in <https://drive.google.com/open?id=1JtA7p3sDPksvBmOsJuR4EHw9zRHnKurj>   download the miniImagenet.tar.gz
+We provide the extracted feature in the file  ./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/. If it is unusable, the reviewers can refer to  <https://drive.google.com/open?id=1JtA7p3sDPksvBmOsJuR4EHw9zRHnKurj>   provided by the authors of  S2M2_R and download the miniImagenet.tar.gz
+
+
 
 #### Step2.
-Create a new file ./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/
-Please put the features extracted by the trained 'S2M2_R'  in the file :   
-
-./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/
-base_feature.plk
-novel_feature.plk
-val_feature.plk
-
-
-
-#### Step3.
 
 Create a  new cache/ file  in the main file
 
@@ -82,12 +73,12 @@ With varied number of base neighbors, the accuracy is shown in the follow:
 
 | Number of base neighbors | 5-way 1-shot | 5-way 5-shot |
 | :----------------------: | :----------: | :----------: |
-|          30000           |    67.79     |    84.32     |
+|          30000           |    67.79     |    84.42     |
 |          15000           |    68.06     |    84.49     |
 |          10000           |    68.05     |    84.51     |
-|           5000           |    67.06     |              |
-|           1000           |    65.48     |              |
-|           500            |    64.93     |              |
+|           5000           |    67.06     |    84.28     |
+|           1000           |    65.48     |    83.50     |
+|           500            |    64.93     |    83.24     |
 
 
 
@@ -99,7 +90,7 @@ To show the sampling bias aggravated by task centorid is a naturally occurring p
 - Run:
 
 ```eval
-python bias_simulation.ipynb
+python gaussian_acc.py --a [0.5/1/2/3] --n_shot [1/3/5/10]
 ```
 
 for the visualization of the simulation experiments with varied number of shots and a.
