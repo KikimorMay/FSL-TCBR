@@ -94,7 +94,7 @@ With varied number of base neighbors, the accuracy is shown in the follow:
 
 ## Visualization
 
-To show the sampling bias aggravated by task centorid is a naturally occurring phenomenon in few-shot learning, as stated in Section , please
+To show the sampling bias aggravated by task centorid is a naturally occurring phenomenon in few-shot learning, as stated in Section 3.3, please
 
 - Run:
 
