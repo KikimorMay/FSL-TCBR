@@ -9,48 +9,10 @@ import h5py
 
 # ========================================================
 #   Usefull paths
-_datasetFeaturesFiles = {"miniImagenetnovel": "/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/WideResNet28_10_S2M2_R/novel_features.plk",
-                         "miniImagenetbase": "/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/WideResNet28_10_S2M2_R/base_features.plk",
-                         'mini2leafnovel': '/data/jingxu/project/fsl_distribution/checkpoints/mini2leaf/last/novel_features.plk',
-                         'mini2CUBnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2CUB/last/novel_features.plk',
-                         'mini2dtdnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2dtd/last/novel_features.plk',
-                         'mini2flowersnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2flowers/last/novel_features.plk',
-                         'mini2funginovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2fungi/last/novel_features.plk',
-                         'mini2ominovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2omi/last/novel_features.plk',
-                         'res12distillnovel':'/data/jingxu/project/fsl_inv_equ/save_features/ResNet12_in_eq_distill/novel_features.plk',
-                         'res12nodistillnovel':'/data/jingxu/project/fsl_distribution/checkpoints/eq_in/no_distill/novel_features.plk',
-                         'mini2coconovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2coco/s2m2_coco_new.plk',
-                         'mini2qdnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2qd/s2m2_QuickD_new.plk',
-                         'miniin_eqnovel':'/data/jingxu/project/fsl_inv_equ/save_features/ResNet12_in_eq_distill/novel_features.plk',
-                         'mini2airnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2air/last/novel_features.plk',
-                         'mini2quickdnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2quickd/last/novel_features.plk',
-                         'mini2gtsrbnovel':'/data/jingxu/project/fsl_distribution/checkpoints/mini2gtsrb/last/novel_features.plk',
-                         "CUBnovel": "./checkpoints/CUB/WideResNet28_10_S2M2_R/novel_features.plk",
-                         'far100novel':"/data/jingxu/project/fsl_distribution/checkpoints/cos_distance/100/far_features.plk",
-                         'near100novel':"/data/jingxu/project/fsl_distribution/checkpoints/cos_distance/100/near_features.plk",
-                         'far300novel':"/data/jingxu/project/fsl_distribution/checkpoints/cos_distance/300/far_features.plk",
-                         'near300novel':"/data/jingxu/project/fsl_distribution/checkpoints/cos_distance/300/near_features.plk",
-                         "tiered_imagenetnovel":"/data/jingxu/project/fsl_distribution/checkpoints/tiered_imagenet/WideResNet28_10_S2M2_R/last/novel_features.plk",
-                         'baseline++novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_aug/novel.hdf5',
-                         'baseline++0.9novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.9_aug/novel.hdf5',
-                         'baseline++0.8novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.8_aug/novel.hdf5',
-                         'baseline++0.85novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.85_aug/novel.hdf5',
-                         'baseline++0.95novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.95_aug/novel.hdf5',
-                         'baseline++0.0novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.0_aug/novel.hdf5',
-                         'baseline++0.1novel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.1_aug/novel.hdf5',
-                         'baseline++zscorenovel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/ResNet18_baseline++_0.9_zscore_aug/novel.hdf5',
-                         'Pico01novel':"/data/jingxu/project/PiCO/experiment/PiCO-CIFAR-10/ds_miniImagenet_pr_0.1_lr_0.02_ep_1000_ps_1_lw_0.5_pm_0.99_arch_resnet12_heir_False_sd_None/900_features.plk",
-                         'Pico0novel':"/data/jingxu/project/PiCO/experiment/PiCO-CIFAR-10/ds_miniImagenet_pr_0.0_lr_0.02_ep_1000_ps_1_lw_0.5_pm_0.99_arch_resnet12_heir_False_sd_None/900_features.plk",
-                         'Pico02novel':"/data/jingxu/project/PiCO/experiment/PiCO-CIFAR-10/ds_miniImagenet_pr_0.2_lr_0.02_ep_500_ps_1_lw_0.5_pm_0.99_arch_resnet18_heir_False_sd_None/400_features.plk",
-                         'Pico005novel':"/data/jingxu/project/PiCO/experiment/PiCO-CIFAR-10/ds_miniImagenet_pr_0.05_lr_0.02_ep_800_ps_1_lw_0.5_pm_0.99_arch_resnet18_heir_False_sd_None/500_features.plk",
-                         'miniImagenetminusnovel':'/data/jingxu/project/fsl_distribution/checkpoints/cos_distance/novel_miuns_centers.pickle',
-                         'miniImagenetminus0.7novel':'/data/jingxu/project/fsl_distribution/checkpoints/cos_distance/novel_miuns_centers_0.7.pickle',
-                         'miniminus_train16novel':'/data/jingxu/project/fsl_baseline/features/miniImagenet/ResNet18_baseline++_0.9_16_aug/novel.hdf5',
-                         'miniminus_train128novel':'/data/jingxu/project/fsl_baseline/features/miniImagenet/ResNet18_baseline++_0.9_128_aug/novel.hdf5',
-                         'miniImagenet9snovel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/WideResNet28_10_S2M2_R_9s/novel_features_new.plk',
-                         'miniImagenetscorenovel':'/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/WideResNet28_10_S2M2_R_zscore/novel_features.plk',
+_datasetFeaturesFiles = {"miniImagenetnovel": "./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/novel_features.plk",
+                         "miniImagenetbase": "./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/base_features.plk",
                          }
-_cacheDir = "/data/jingxu/project/fsl_distribution/cache"
+_cacheDir = "./cache"
 _maxRuns = 10000
 _min_examples = -1
 
@@ -103,30 +65,9 @@ def _load_pickle(file, is_hdf5=False):
             dataset = dict()
             dataset['data'] = torch.FloatTensor(np.stack(data, axis=0))  # [12000, 640]
             dataset['labels'] = torch.LongTensor(np.concatenate(labels))  #[12000]
-            # dataset = dict()
-            # dataset['data'] = torch.FloatTensor(data[0])
-            # dataset['labels'] = torch.FloatTensor(data[1])
             return dataset
 
-#
-#
-# def _load_pickle(file):
-#     with open(file, 'rb') as f:
-#         data = pickle.load(f)
-#         labels = [np.full(shape=len(data[key]), fill_value=key)
-#                   for key in data]
-#         data = [features for key in data for features in data[key]]
-#         dataset = dict()
-#         dataset['data'] = torch.FloatTensor(np.stack(data, axis=0))
-#         dataset['labels'] = torch.LongTensor(np.concatenate(labels))
-#         # dataset['data'] = torch.FloatTensor(data[0])
-#         # dataset['labels'] = torch.FloatTensor(data[1])
-#
-#         return dataset
 
-
-# =========================================================
-#    Callable variables and functions from outside the module
 
 data = None
 labels = None
@@ -186,8 +127,7 @@ def GenerateRun(iRun, cfg, regenRState=False, generate=True, select_class=None):
         if generate:
             dataset[i] = data[classes[i], shuffle_indices,
                               :][:cfg['shot']+cfg['queries']]
-
-    return dataset
+    return dataset, torch.Tensor(classes)
 
 
 def ClassesInRun(iRun, cfg):
@@ -233,19 +173,18 @@ def GenerateRunSet(start=None, end=None, cfg=None, select_class=None):
 
     dataset = torch.zeros(
         (end-start, cfg['ways'], cfg['shot']+cfg['queries'], data.shape[2]))
+    classes = torch.zeros(
+        (end-start, cfg['ways']))
     for iRun in range(end-start):
-        dataset[iRun] = GenerateRun(start+iRun, cfg, select_class=select_class)
+        dataset[iRun], classes[iRun] = GenerateRun(start+iRun, cfg, select_class=select_class)
 
-    return dataset
+    return dataset, classes
 
 
 
 def change_format(path):
     with open(path, 'rb') as f:
         data = pickle.load(f)
-        print(data[0].shape)
-        print(data[1])
-        num = data[1].shape
         import collections
 
         output_dict = collections.defaultdict(list)
@@ -255,7 +194,7 @@ def change_format(path):
             output_dict[label.item()].append(out)
 
         print(output_dict.keys())
-        path = '/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/WideResNet28_10_S2M2_R_9s/novel_features_new.plk'
+        path = './checkpoints/miniImagenet/WideResNet28_10_S2M2_R_9s/novel_features_new.plk'
         with open(path, 'wb') as f:
             pickle.dump(output_dict, f)
 
@@ -277,12 +216,12 @@ if __name__ == "__main__":
     # loadDataSet('miniimagenet', type='novel')
 
 
-    data_path = '/data/jingxu/project/fsl_distribution/checkpoints/mini2coco/s2m2_coco.plk'
-    # data_path = '/data/jingxu/project/fsl_distribution/checkpoints/mini2qd/s2m2_QuickD.plk'
+    data_path = './checkpoints/mini2coco/s2m2_coco.plk'
+    # data_path = './checkpoints/mini2qd/s2m2_QuickD.plk'
 
-    # data_path = '/data/jingxu/project/fsl_distribution/checkpoints/mini2air/last/novel_features.plk'
-    # data_path = '/data/jingxu/project/fsl_distribution/checkpoints/mini2quickd/last/novel_features.plk'
-    data_path = '/data/jingxu/project/fsl_distribution/checkpoints/miniImagenet/WideResNet28_10_S2M2_R_9s/novel_features.plk'
+    # data_path = './checkpoints/mini2air/last/novel_features.plk'
+    # data_path = './checkpoints/mini2quickd/last/novel_features.plk'
+    data_path = './checkpoints/miniImagenet/WideResNet28_10_S2M2_R_9s/novel_features.plk'
 
     change_format(data_path)
 
