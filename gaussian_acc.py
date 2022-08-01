@@ -5,13 +5,28 @@ from models.proo_head import PN_head
 import pickle
 
 
+from scipy.stats import t
+import scipy
+
+def mean_confidence_interval(data, confidence=0.95):
+    a = 100.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), scipy.stats.sem(a)
+    h = se * t._ppf((1+confidence)/2., n-1)
+    return m, h
+
+def get_cos_sin( x, y):
+    cos_val = (x * y).sum(-1, keepdim=True) / torch.norm(x, 2, 1, keepdim=True) / torch.norm(y, 2, 1, keepdim=True)
+    sin_val = (1 - cos_val * cos_val).sqrt()
+    return cos_val, sin_val
+
 def gen_clusters(a, sample_num):
-    mean1 = [a, 0]
-    cov1 = [[1, 0], [0, 1]]
+    mean1 = [a]*50
+    cov1 = np.eye(50)
     data1 = np.random.multivariate_normal(mean1, cov1, sample_num)
 
-    mean2 = [-a, 0]
-    cov2 = [[1, 0], [0, 1]]
+    mean2 = [-a]*50
+    cov2 =  np.eye(50)
     data2 = np.random.multivariate_normal(mean2, cov2, sample_num)
 
     return np.round(data1, 4), np.round(data2, 4)
@@ -32,6 +47,8 @@ def draw_gaussian_acc(acc_dict, dis_dict, acc_all_mean):
         acc_list.append(np.array(info[key]).mean())
         dis_num.append(dis_dict[key])
         print('dis is:', key, 'acc is:', np.array(info[key]).mean())
+
+
 
     dis_list = np.array(dis_list)
     fig, ax = plt.subplots(figsize=(7, 3.6))
@@ -54,8 +71,9 @@ def draw_gaussian_acc(acc_dict, dis_dict, acc_all_mean):
     ax1.set_ylabel("#Numbers of Tasks", fontsize=15, color='g')
 
     plt.legend(fontsize=15, loc='lower right')
+    plt.savefig('bbb2.png')
+    # plt.savefig('nnn2.png')
     plt.show()
-
 
 def get_acc(a, n_shot, n_query=200):
     acc_dict = {}
@@ -68,6 +86,16 @@ def get_acc(a, n_shot, n_query=200):
         class2 = torch.Tensor(class2).unsqueeze(0).cuda()
         label1 = np.array([0] * (n_query))
         label2 = np.array([1] * (n_query))
+
+
+        # base_means = torch.mean(class1+class2, dim=1)
+        # cos_val, sin_val = get_cos_sin(class1, base_means)
+        # class1 = class1 - cos_val*base_means
+        #
+        # cos_val, sin_val = get_cos_sin(class2, base_means)
+        # class2 =  class2 - cos_val*base_means
+
+
 
         class1_s = class1[:, :n_shot, :].reshape(1, n_shot, -1)  # (batch, n_shot, n_dim)
         class1_q = class1[:, n_shot:, :]
@@ -84,7 +112,7 @@ def get_acc(a, n_shot, n_query=200):
 
         support_data = torch.cat([class1_s, class2_s], axis=1)
         query_data = torch.cat([class1_q, class2_q], axis=1)
-        classifier = PN_head(scale_cls=1, normalize=False, metric="euclidean").cuda()
+        classifier = PN_head(scale_cls=1, normalize=True, metric="cosine").cuda()
         classification_scores = classifier(query_data, support_data, 2, n_shot,
                                            prototypes=prototype)  # shape (batch, num_, n_way)
         cls = torch.argmax(classification_scores.squeeze(0), dim=1)
@@ -111,13 +139,16 @@ def get_acc(a, n_shot, n_query=200):
 
     acc_np = np.array(acc_list)
 
+
     draw_gaussian_acc(acc_dict, dis_dict, acc_np.mean())
+    print(mean_confidence_interval(acc_np))
+
 
 
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--a', type=float, default='1',
+parser.add_argument('--a', type=float, default='0.3',
                     help='0.5/1/2/3')
 parser.add_argument('--n_shot', type=int, default='1',
                     help='1/3/5/10')
