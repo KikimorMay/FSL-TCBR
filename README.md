@@ -12,7 +12,7 @@ We use the same backbone network and training strategies as 'S2M2_R'. Please ref
 
 
 #### Step1.
-We provide the extracted feature in the file  ./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/. If it is unusable, the reviewers can refer to  <https://drive.google.com/open?id=1JtA7p3sDPksvBmOsJuR4EHw9zRHnKurj>   provided by the authors of  S2M2_R and download the miniImagenet.tar.gz
+We provide the extracted feature in the file  ./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/. If it is unusable, please refer to  <https://drive.google.com/open?id=1JtA7p3sDPksvBmOsJuR4EHw9zRHnKurj>   provided by the authors of S2M2_R and download the miniImagenet.tar.gz
 
 
 
