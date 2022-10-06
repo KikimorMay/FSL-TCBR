@@ -86,7 +86,7 @@ With varied number of base neighbors, the accuracy is shown in the follow:
 
 ## Simulations with Gaussian Distribution 
 
-# To show the sample bias aggravated by task centorid is a naturally occurring phenomenon in few-shot learning, as stated in Section 3.3, please
+### To show the sample bias aggravated by task centorid is a naturally occurring phenomenon in few-shot learning, as stated in Section 3.3, please
 
 - Run:
 
@@ -97,7 +97,7 @@ python gaussian_acc.py --a [0.5/1/2/3] --n_shot [1/3/5/10]
 for the visualization of the simulation experiments with varied number of shots and a.
 
 
-# To show the TCPR is applicable in the most common gaussian distribution cases, we show the performance of 3-d with Gaussian distribution. TCPR results in a 4.2% accuracy improvement (from 65.99% to 69.17%).
+### To show the TCPR is applicable in the most common gaussian distribution cases, we show the performance of 3-d with Gaussian distribution. TCPR results in a 4.2% accuracy improvement (from 65.99% to 69.17%).
 
 - Run:
 
