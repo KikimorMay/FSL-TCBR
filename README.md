@@ -1,38 +1,4 @@
 
-# Response to Reviewer ZuAK:
-
-We project the real data(2 novel classes in mini-Imagenet) into 3-d space uing PCA, and perform TCPR. The distributions of feature before and after using TCPR is shown as follows:
-
-
-before TCPR:
-<div align=center><img width="300" height="250" src="simulation/novel_baseline.jpg"/></div>
-
-after TCPR:
-<div align=center><img width="300" height="250" src="simulation/novel_tcpr.jpg"/></div>
-
-
-
-
-
-
-# Response to Reviewer mLQK:
-
-We conduct the simulation experiments in higher dimensional space, and the similar phenomenon can be observed. Here, we give the experiments in 10-d:
-
-1-shot with a=0.5:
-<div align=center><img width="380" height="250" src="simulation/dim10a0.5.png"/></div>
-
-
-1-shot with a=1:
-<div align=center><img width="380" height="250" src="simulation/dim10a1.png"/></div>
-
-
-
-1-shot with a=2:
-<div align=center><img width="380" height="250" src="simulation/dim10a2.png"/></div>
-
-
-
 # FSL-TCBR
 
 Paper name:
@@ -118,9 +84,9 @@ With varied number of base neighbors, the accuracy is shown in the follow:
 
 
 
-## Visualization
+## Simulations with Gaussian Distribution 
 
-To show the sampling bias aggravated by task centorid is a naturally occurring phenomenon in few-shot learning, as stated in Section 3.3, please
+1. To show the sample bias aggravated by task centorid is a naturally occurring phenomenon in few-shot learning, as stated in Section 3.3, please
 
 - Run:
 
@@ -129,3 +95,12 @@ python gaussian_acc.py --a [0.5/1/2/3] --n_shot [1/3/5/10]
 ```
 
 for the visualization of the simulation experiments with varied number of shots and a.
+
+
+2. To show the TCPR is applicable in the most common gaussian distribution cases, we show the performance of 3-d with Gaussian distribution. TCPR results in a 4.2% accuracy improvement (from 65.99% to 69.17%).
+
+- Run:
+
+```eval
+python gaussian_simulation.py
+```
