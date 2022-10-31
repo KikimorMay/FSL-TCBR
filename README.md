@@ -67,7 +67,7 @@ By using "--appro_stastic base_appro", the approximated task centorid is calcula
 - Run:
 
 ```
-python train_cfc.py --cls new --appro_stastic base_appro --n_shot [1/5] --num_neighbors [30000/15000/10000/5000/1000/500]
+python evaluate_DC_minusEffect.py --cls new --appro_stastic base_appro --n_shot [1/5] --num_neighbors [30000/15000/10000/5000/1000/500]
 ```
 
 With varied number of base neighbors, the accuracy is shown in the follow:
@@ -97,11 +97,17 @@ python gaussian_simulation.py --a [0.5/1/2/3] --n_shot [1/3/5/10]
 for the visualization of the simulation experiments with varied number of shots and a.
 
 
-#### To show the TCPR is applicable in the most common gaussian distribution cases, we show the performance of 3-d with Gaussian distribution. 
+#### To show the task centroid is existing in the real data, as shown in the Figure 1, please 
 
 - Run:
 
-```eval
-python gaussian_acc.py
 ```
-TCPR results in a 4.2% accuracy improvement (from 65.99% to 69.17%).
+python real_data_simulation.py
+```
+
+- or Run:
+```
+python evaluate_DC_minusEffect.py --draw_selected_classes True --cls [cosine/new]
+```
+to get the accuracy with distance as first.
+

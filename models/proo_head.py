@@ -6,7 +6,7 @@ from torch import Tensor
 
 
 
-def L2SquareDist(A: Tensor, B: Tensor, base_means, average: bool = True) -> Tensor:
+def L2SquareDist(A: Tensor, B: Tensor, base_means=None, average: bool = False) -> Tensor:
     r"""calculate parwise euclidean distance between two batchs of features.
     Args:
         A: Torch feature tensor. size:[Batch_size, Na, nC]

@@ -12,7 +12,6 @@ from torch.utils.tensorboard import SummaryWriter
 
 use_gpu = torch.cuda.is_available()
 
-BEST_ACC = 0
 import torch.nn.functional as F
 
 
@@ -110,11 +109,10 @@ class SimpleHDF5Dataset:
 def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,dataset_name, k):
 
     # ---- classification for each task
-    dif_sampled_list = []
-    dif_original_list_1 = []
-    dif_original_list_2 = []
 
     acc_list = []
+    acc_dis = {}
+
     print('Start classification for %d tasks...' % (n_runs))
     for i in tqdm(range(n_runs)):
 
@@ -144,9 +142,7 @@ def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,
                     features_list.append([feature])
             feature = np.concatenate(np.array(features_list)).reshape(-1, dim)
 
-
         cls_name = args.cls
-
 
         # get approximated task centorid
         if args.appro_stastic == 'support':
@@ -166,7 +162,6 @@ def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,
             similar = torch.mm(F.normalize(support_mean).cuda(), F.normalize(feature).cuda().transpose(0,1))
             sim_cos, pred = similar[0].topk(k, 0, True, True)
             sim_weight = torch.pow(sim_cos, 0.5)/torch.sum(torch.pow(sim_cos, 0.5))
-            # approximation = F.normalize(torch.mean(feature[pred,:], dim=0).unsqueeze(0))
             approximation = torch.sum(sim_weight.unsqueeze(1)*feature[pred,:], dim=0).unsqueeze(0)
             approximation = F.normalize(approximation)
 
@@ -180,6 +175,11 @@ def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,
         Y_aug = torch.LongTensor(Y_aug).cuda()
         query_data = torch.Tensor(query_data).cuda()
         query_label = torch.LongTensor(query_label).cuda()
+
+        # ---- calculate the distance of support data to the task centroid
+        if args.draw_selected_classes:
+            from models.proo_head import L2SquareDist
+            dis = L2SquareDist(X_aug.unsqueeze(0), approximation.unsqueeze(0))
 
         # ---- train classifier
         for _ in range(100):
@@ -204,13 +204,27 @@ def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,
             else:
                 scores = linear_clf(query_data)
 
+        # ---- calculate the accuracy
         acc = accuracy(scores, query_label).detach().cpu().numpy()
         acc_list.append(acc)
 
-    print(mean_confidence_interval(acc_list))
+        # ---- save the accuracy with the distance to the task centroid
+        if args.draw_selected_classes:
+            dis = dis.cpu().numpy()
+            dis = dis.mean()
+            dis = np.around(dis, 1)
+            if dis in acc_dis.keys():
+                acc_dis[dis].append(acc)
+            else:
+                acc_dis[dis] = [acc]
 
-    print('miniImageNet %d way %d shot  ACC : %f best ACC is: %f, dif_sampled is: %f, dis_original_1 is: %f,  dis_original_2 is: %f,' % (n_ways, n_shot, float(np.mean(acc_list)), BEST_ACC, float(np.mean(dif_sampled_list)), float(np.mean(dif_original_list_1)), float(np.mean(dif_original_list_2))))
-    print('dataset is:', dataset_name, 'k is:', k, 'cls_type is:', cls_name)
+    print('dataset %s,  %d way %d shot, k=%d, cls is %s'%(dataset_name, n_ways, n_shot, k, cls_name), ' ACC is: ',  mean_confidence_interval(acc_list))
+
+    if args.draw_selected_classes:
+        for key in acc_dis:
+            print('dis is:', key, 'acc is:', np.array(acc_dis[key]).mean())
+        with open('./pickle_file/acc_dis_'+ args.cls +'_'+str(select_class), 'wb') as f:
+            pickle.dump(acc_dis, f)
 
 
 def main_train(args, select_class=None):
@@ -219,7 +233,7 @@ def main_train(args, select_class=None):
     n_shot = args.n_shot
     n_ways = args.n_ways
     n_queries = 15
-    n_runs = 2000
+
 
     n_lsamples = n_ways * n_shot
     n_usamples = n_ways * n_queries
@@ -233,11 +247,11 @@ def main_train(args, select_class=None):
 
 
     FSLTask.setRandomStates(cfg)
-    ndatas, classes = FSLTask.GenerateRunSet(end=n_runs, cfg=cfg, select_class=select_class)
-    ndatas = ndatas.permute(0, 2, 1, 3).reshape(n_runs, n_samples, -1)  # shape [10000, 80, 640]
-    labels = torch.arange(n_ways).view(1, 1, n_ways).expand(n_runs, n_shot + n_queries, n_ways).clone().view(n_runs,n_samples)
+    ndatas, classes = FSLTask.GenerateRunSet(end=args.n_runs, cfg=cfg, select_class=select_class)
+    ndatas = ndatas.permute(0, 2, 1, 3).reshape(args.n_runs, n_samples, -1)  # shape [10000, 80, 640]
+    labels = torch.arange(n_ways).view(1, 1, n_ways).expand(args.n_runs, n_shot + n_queries, n_ways).clone().view(args.n_runs,n_samples)
 
-    evaluate(args, n_runs, ndatas, labels, classes, n_lsamples=n_lsamples, n_ways=n_ways, n_shot=n_shot,  dataset_name=dataset_name, k=args.num_neighbors)
+    evaluate(args, args.n_runs, ndatas, labels, classes, n_lsamples=n_lsamples, n_ways=n_ways, n_shot=n_shot,  dataset_name=dataset_name, k=args.num_neighbors)
 
 if __name__ == '__main__':
     # ---- data loading
@@ -248,14 +262,21 @@ if __name__ == '__main__':
                         help='support/transductive/base_appro')
     parser.add_argument('--num_neighbors', type=int, default='15000',
                         help='20000/15000/10000/5000/1000/500')
-    parser.add_argument('--cls' , type=str, default='cosine', help='cosine/new')
+    parser.add_argument('--cls' , type=str, default='new', help='cosine/new')
     parser.add_argument('--n_shot' , type=int, default=1, help='1/5')
     parser.add_argument('--n_ways' , type=int, default=5, help='2/5/10')
+    parser.add_argument('--draw_selected_classes', type=bool, default=True)
+    parser.add_argument('--n_runs', type=int, default=2000)
 
 
 
     args = parser.parse_args()
-    # select_class = [8,2]
-    select_class = None
+    if args.draw_selected_classes:
+        args.n_ways = 2
+        select_class =[2,3] # the 2-th and 9-th classes in novel classes
+        args.n_runs = 10000
+    else:
+        select_class = None
+
     main_train(args, select_class)
 
