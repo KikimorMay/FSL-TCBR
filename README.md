@@ -47,7 +47,7 @@ To get the performance of proposed transformation TCPR with different approximat
 - Run:
 
 ```
-python train_cfc.py --cls new --appro_stastic [support/transductive] --n_shot [1/5] 
+python evaluate_DC_minusEffect.py --cls new --appro_stastic [support/transductive] --n_shot [1/5] 
 ```
 
 By using "--appro_stastic support", the approximated task centorid is calculated by the mean of the support data:
@@ -81,6 +81,17 @@ With varied number of base neighbors, the accuracy is shown in the follow:
 |           1000           |    65.48     |    83.50     |
 |           500            |    64.93     |    83.24     |
 
+
+
+### Performance on Meta-dataset
+
+We provide the extracted novel features on Meta-learning(trained on miniImagenet with S2M2) in the [link](https://drive.google.com/file/d/16EvU3PSqHCLQi3Yv7ZeVSE7C8Bwgrn85/view?usp=share_link). You can download those features and put it into the checkpoints folder.  Please refer the k in the paper.
+
+- Run:
+
+```
+python evaluate_DC_minusEffect.py --cls new --appro_stastic [base_appro/support/transductive] --n_shot [1/5] ----num_neighbors [5000/30000/...] --dataset [mini2CUB/mini2dtd/...]
+```
 
 
 
