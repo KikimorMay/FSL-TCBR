@@ -122,3 +122,9 @@ python evaluate_DC_minusEffect.py --draw_selected_classes True --cls [cosine/new
 ```
 to get the accuracy with distance as first.
 
+## References 
+
+This code is based on the implementations of  [s2m2](https://github.com/nupurkmr9/S2M2_fewshot) and [Few-shot Distribution Calibration](https://github.com/ShuoYang-1998/Few_Shot_Distribution_Calibration) 
+
+
+
