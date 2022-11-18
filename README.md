@@ -1,8 +1,7 @@
 
 # FSL-TCBR
 
-Paper name:
-Alleviating the Sampling Bias of Few Shot Data by Removing Projection to the Centroid [NeurIPS 2022, Spotlight]
+Code for our paper ”Alleviating the Sampling Bias of Few Shot Data by Removing Projection to the Centroid“ [NeurIPS 2022, Spotlight]
 
 Slides: five-minute short version [(link)](https://drive.google.com/file/d/10riiWTvE8fnqwtyBJTuCaE2CsRnP9zfL/view?usp=share_link)
 
