@@ -265,7 +265,7 @@ if __name__ == '__main__':
     parser.add_argument('--cls' , type=str, default='new', help='cosine/new')
     parser.add_argument('--n_shot' , type=int, default=1, help='1/5')
     parser.add_argument('--n_ways' , type=int, default=5, help='2/5/10')
-    parser.add_argument('--draw_selected_classes', type=bool, default=True)
+    parser.add_argument('--draw_selected_classes', type=bool, default=False)
     parser.add_argument('--n_runs', type=int, default=2000)
 
 
