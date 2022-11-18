@@ -120,7 +120,7 @@ def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,
         support_label = labels[i][:n_lsamples].numpy()
         query_data = ndatas[i][n_lsamples:].numpy()
         query_label = labels[i][n_lsamples:].numpy()
-        # ---- Tukey's transform DC(2021 ICML paper)
+        # ---- Tukey's transform DC(2021 ICLR paper)
         beta = 0.7 # 0.8
         support_data = np.power(support_data[:, ], beta)
         query_data = np.power(query_data[:, ], beta)
@@ -199,10 +199,10 @@ def evaluate(args, n_runs, ndatas, labels, classes, n_lsamples, n_ways, n_shot ,
                 loss.backward(retain_graph=True)
                 finetune_optimizer.step()
 
-            if cls_name == 'new':
-                scores= linear_clf(query_data, approximation)
-            else:
-                scores = linear_clf(query_data)
+        if cls_name == 'new':
+            scores= linear_clf(query_data, approximation)
+        else:
+            scores = linear_clf(query_data)
 
         # ---- calculate the accuracy
         acc = accuracy(scores, query_label).detach().cpu().numpy()
