@@ -2,17 +2,19 @@
 # FSL-TCBR
 
 Paper name:
-Alleviating the Sampling Bias of Few Shot Data by Removing Projection to the Centroid
+Alleviating the Sampling Bias of Few Shot Data by Removing Projection to the Centroid (NeurIPS 2022, Spotlight)
+
+Slides: five-minute short version [(link)](https://drive.google.com/file/d/10riiWTvE8fnqwtyBJTuCaE2CsRnP9zfL/view?usp=share_link)
 
 
 
 ## Preprocessing:
 For illustration, we use the publicly available algorithm with extracted features.
-We use the same backbone network and training strategies as 'S2M2_R'. Please refer to https://github.com/nupurkmr9/S2M2_fewshot for the backbone training.
+We use the same backbone network and training strategies as 'S2M2_R'. Please refer to the [link](https://github.com/nupurkmr9/S2M2_fewshot) for the backbone training.
 
 
 #### Step1.
-We provide the extracted feature in the file  ./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/. If it is unusable, please refer to  <https://drive.google.com/open?id=1JtA7p3sDPksvBmOsJuR4EHw9zRHnKurj>   provided by the authors of S2M2_R and download the miniImagenet.tar.gz
+We provide the extracted feature in the file  ./checkpoints/miniImagenet/WideResNet28_10_S2M2_R/. If it is unusable, please refer to the [link](https://drive.google.com/open?id=1JtA7p3sDPksvBmOsJuR4EHw9zRHnKurj)   provided by the authors of S2M2_R and download the miniImagenet.tar.gz
 
 
 
